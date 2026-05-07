@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 
-void doOcr(File imageFile) async {
+Future<String> readImageText(File imageFile) async {
   // 1. Create an instance (can specify script like Latin, Chinese, etc.)
   final textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);
 
@@ -27,4 +27,6 @@ void doOcr(File imageFile) async {
 
   // 5. Always close the recognizer when done
   textRecognizer.close();
+
+  return text;
 }

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:ocr_test/ocr.dart';
+import 'package:path/path.dart';
 
 void main() {
   runApp(const MyApp());
@@ -32,30 +33,42 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   String imagePath = '';
+  String ocrText = '';
 
   @override
   Widget build(BuildContext context) {
+    final fileName = basename(imagePath);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
 
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: .center,
-          children: [
-            ElevatedButton(
-              onPressed: pickImageFile,
-              child: Text('Pick an image'),
-            ),
-            Text('Image Path: $imagePath'),
-            if (imagePath.isNotEmpty)
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: .center,
+            children: [
               ElevatedButton(
-                onPressed: processImage,
-                child: Text('Process Image'),
+                onPressed: pickImageFile,
+                child: Text('Pick an image'),
               ),
-          ],
+              if (imagePath.isNotEmpty) ...[
+                Text('Filename: $fileName'),
+                Image.file(File(imagePath)),
+                ElevatedButton(
+                  onPressed: processImage,
+                  child: Text('Read Image Text'),
+                ),
+              ],
+
+              if (ocrText.isNotEmpty)
+                Align(
+                  alignment: AlignmentGeometry.centerLeft,
+                  child: Text('OCR Text: \n$ocrText'),
+                ),
+            ],
+          ),
         ),
       ),
     );
@@ -65,17 +78,17 @@ class _MyHomePageState extends State<MyHomePage> {
     FilePickerResult? result = await FilePicker.pickFiles();
 
     if (result != null) {
+      ocrText = '';
       imagePath = result.files.single.path!;
-    } else {
-      imagePath = '';
     }
 
     setState(() {});
   }
 
-  void processImage() {
+  Future<void> processImage() async {
     if (imagePath.isEmpty) return;
     final file = File(imagePath);
-    doOcr(file);
+    ocrText = await readImageText(file);
+    setState(() {});
   }
 }
