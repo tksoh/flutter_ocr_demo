@@ -66,7 +66,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Image.file(File(imagePath)),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        width: 1.0, // Border width
+                      ),
+                    ),
+                    child: Image.file(File(imagePath)),
+                  ),
                 ),
                 SizedBox(height: 10),
                 Row(
