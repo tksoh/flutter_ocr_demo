@@ -5,7 +5,7 @@ import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart
 
 Future<String> readImageText(File imageFile) async {
   // 1. Create an instance (can specify script like Latin, Chinese, etc.)
-  final textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);
+  final textRecognizer = TextRecognizer(script: TextRecognitionScript.chinese);
 
   // 2. Prepare the image (from a file path or camera stream)
   final inputImage = InputImage.fromFilePath(imageFile.path);
