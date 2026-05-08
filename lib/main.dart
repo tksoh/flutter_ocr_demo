@@ -60,8 +60,14 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               if (imagePath.isNotEmpty) ...[
                 SizedBox(height: 10),
-                Text('Filename: $fileName'),
-                Image.file(File(imagePath)),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text('Filename: $fileName'),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Image.file(File(imagePath)),
+                ),
                 SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
