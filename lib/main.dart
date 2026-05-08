@@ -33,14 +33,14 @@ class MyHomePage extends StatefulWidget {
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MyHomePage> createState() => MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class MyHomePageState extends State<MyHomePage> {
   String imagePath = '';
   String ocrText = '';
   TextRecognitionScript detectionLang = TextRecognitionScript.chinese;
-  final _controller = ScrollController();
+  final scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: SingleChildScrollView(
-        controller: _controller,
+        controller: scrollController,
         child: Center(
           child: Column(
             mainAxisAlignment: .center,
@@ -79,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       onPressed: processImage,
                       child: Text('Read Image Text'),
                     ),
-                    _langSelectDropdown(),
+                    langSelectDropdown(),
                   ],
                 ),
                 SizedBox(height: 10),
@@ -118,15 +118,15 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  void _scrollToBottom() {
-    _controller.animateTo(
-      _controller.position.maxScrollExtent,
+  void scrollToBottom() {
+    scrollController.animateTo(
+      scrollController.position.maxScrollExtent,
       duration: Duration(milliseconds: 500),
       curve: Curves.easeOut,
     );
   }
 
-  Widget _langSelectDropdown() {
+  Widget langSelectDropdown() {
     return DropdownMenu<TextRecognitionScript>(
       initialSelection: detectionLang,
       onSelected: (TextRecognitionScript? value) {
@@ -163,6 +163,6 @@ class _MyHomePageState extends State<MyHomePage> {
     final file = File(imagePath);
     ocrText = await readImageText(file, detectionLang);
     setState(() {});
-    Future.delayed(Duration(milliseconds: 100), () => _scrollToBottom());
+    Future.delayed(Duration(milliseconds: 100), () => scrollToBottom());
   }
 }
