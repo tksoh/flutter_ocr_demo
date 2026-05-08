@@ -18,7 +18,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter OCR',
       theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
-      home: const MyHomePage(title: 'Flutter OCR'),
+      home: SafeArea(
+        bottom: true,
+        child: const MyHomePage(title: 'Flutter OCR'),
+      ),
     );
   }
 }
