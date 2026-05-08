@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
@@ -87,10 +88,11 @@ class MyHomePageState extends State<MyHomePage> {
               if (ocrText.isNotEmpty)
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Align(
-                    alignment: AlignmentGeometry.centerLeft,
-                    child: Text('OCR Text: \n$ocrText'),
-                  ),
+                  child: ocrTextPanel(),
+                  // child: Align(
+                  //   alignment: AlignmentGeometry.centerLeft,
+                  //   child: Text('OCR Text: \n$ocrText'),
+                  // ),
                 ),
             ],
           ),
@@ -115,6 +117,39 @@ class MyHomePageState extends State<MyHomePage> {
               : child; // Displayed once the image is ready
         },
       ),
+    );
+  }
+
+  Widget ocrTextPanel() {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('Image Text:'),
+            IconButton(
+              onPressed: () {
+                Clipboard.setData(ClipboardData(text: ocrText));
+                // ScaffoldMessenger.of(context).showSnackBar(
+                //   const SnackBar(content: Text('Text copied to clipboard')),
+                // );
+              },
+              tooltip: 'Copy OCR text to clipboard',
+              icon: Icon(Icons.copy),
+            ),
+          ],
+        ),
+        Container(
+          padding: EdgeInsets.all(2),
+          width: double.infinity,
+          decoration: BoxDecoration(
+            border: Border.all(
+              width: 1.0, // Border width
+            ),
+          ),
+          child: Text(ocrText),
+        ),
+      ],
     );
   }
 
