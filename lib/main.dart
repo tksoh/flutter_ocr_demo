@@ -68,14 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        width: 1.0, // Border width
-                      ),
-                    ),
-                    child: Image.file(File(imagePath)),
-                  ),
+                  child: imagePanel(),
                 ),
                 SizedBox(height: 10),
                 Row(
@@ -101,6 +94,25 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget imagePanel() {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(
+          width: 1.0, // Border width
+        ),
+      ),
+      child: Image.file(
+        File(imagePath),
+        frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+          if (wasSynchronouslyLoaded) return child;
+          return frame == null
+              ? Center(child: CircularProgressIndicator())
+              : child; // Displayed once the image is ready
+        },
       ),
     );
   }
