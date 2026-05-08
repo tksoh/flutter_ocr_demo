@@ -105,19 +105,24 @@ class MyHomePageState extends State<MyHomePage> {
           width: 1.0, // Border width
         ),
       ),
-      child: Image.file(
-        File(imagePath),
-        frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
-          if (wasSynchronouslyLoaded) return child;
-          return frame == null
-              ? Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(30.0),
-                    child: CircularProgressIndicator(),
-                  ),
-                )
-              : child; // Displayed once the image is ready
-        },
+      child: InteractiveViewer(
+        clipBehavior: Clip.hardEdge,
+        minScale: 1.0,
+        maxScale: 4.0,
+        child: Image.file(
+          File(imagePath),
+          frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+            if (wasSynchronouslyLoaded) return child;
+            return frame == null
+                ? Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(30.0),
+                      child: CircularProgressIndicator(),
+                    ),
+                  )
+                : child; // Displayed once the image is ready
+          },
+        ),
       ),
     );
   }
