@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:ocr_test/ocr.dart';
 import 'package:path/path.dart';
 
@@ -57,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisAlignment: .center,
             children: [
               ElevatedButton(
-                onPressed: pickImageFile,
+                onPressed: pickImage,
                 child: Text('Pick an image'),
               ),
               if (imagePath.isNotEmpty) ...[
@@ -132,15 +132,17 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Future<void> pickImageFile() async {
-    FilePickerResult? result = await FilePicker.pickFiles();
+  Future<void> pickImage() async {
+    final imagePicker = ImagePicker();
+    final XFile? image = await imagePicker.pickImage(
+      source: ImageSource.gallery,
+    );
 
-    if (result != null) {
+    if (image != null) {
       ocrText = '';
-      imagePath = result.files.single.path!;
+      imagePath = image.path;
+      setState(() {});
     }
-
-    setState(() {});
   }
 
   Future<void> processImage() async {
