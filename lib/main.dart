@@ -39,6 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String imagePath = '';
   String ocrText = '';
   TextRecognitionScript detectionLang = TextRecognitionScript.chinese;
+  final _controller = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: SingleChildScrollView(
+        controller: _controller,
         child: Center(
           child: Column(
             mainAxisAlignment: .center,
@@ -103,6 +105,14 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  void _scrollToBottom() {
+    _controller.animateTo(
+      _controller.position.maxScrollExtent,
+      duration: Duration(milliseconds: 500),
+      curve: Curves.easeOut,
+    );
+  }
+
   Widget _langSelectDropdown() {
     return DropdownMenu<TextRecognitionScript>(
       initialSelection: detectionLang,
@@ -138,5 +148,6 @@ class _MyHomePageState extends State<MyHomePage> {
     final file = File(imagePath);
     ocrText = await readImageText(file, detectionLang);
     setState(() {});
+    Future.delayed(Duration(milliseconds: 100), () => _scrollToBottom());
   }
 }
