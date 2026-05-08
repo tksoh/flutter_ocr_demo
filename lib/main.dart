@@ -109,7 +109,12 @@ class MyHomePageState extends State<MyHomePage> {
         frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
           if (wasSynchronouslyLoaded) return child;
           return frame == null
-              ? Center(child: CircularProgressIndicator())
+              ? Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(30.0),
+                    child: CircularProgressIndicator(),
+                  ),
+                )
               : child; // Displayed once the image is ready
         },
       ),
