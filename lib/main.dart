@@ -88,11 +88,7 @@ class MyHomePageState extends State<MyHomePage> {
               if (ocrText.isNotEmpty)
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: ocrTextPanel(),
-                  // child: Align(
-                  //   alignment: AlignmentGeometry.centerLeft,
-                  //   child: Text('OCR Text: \n$ocrText'),
-                  // ),
+                  child: ocrTextPanel(context),
                 ),
             ],
           ),
@@ -120,7 +116,7 @@ class MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget ocrTextPanel() {
+  Widget ocrTextPanel(BuildContext context) {
     return Column(
       children: [
         Row(
@@ -130,11 +126,13 @@ class MyHomePageState extends State<MyHomePage> {
             IconButton(
               onPressed: () {
                 Clipboard.setData(ClipboardData(text: ocrText));
-                // ScaffoldMessenger.of(context).showSnackBar(
-                //   const SnackBar(content: Text('Text copied to clipboard')),
-                // );
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Image text copied to clipboard'),
+                  ),
+                );
               },
-              tooltip: 'Copy OCR text to clipboard',
+              tooltip: 'Copy image text to clipboard',
               icon: Icon(Icons.copy),
             ),
           ],
