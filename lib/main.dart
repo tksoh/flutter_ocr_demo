@@ -58,6 +58,7 @@ class MyHomePageState extends State<MyHomePage> {
           child: Column(
             mainAxisAlignment: .center,
             children: [
+              SizedBox(height: 10),
               ElevatedButton(
                 onPressed: pickImage,
                 child: Text('Pick an image'),
