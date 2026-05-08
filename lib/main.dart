@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:ocr_test/ocr.dart';
 import 'package:path/path.dart';
 
@@ -34,6 +35,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   String imagePath = '';
   String ocrText = '';
+  TextRecognitionScript detectionLang = TextRecognitionScript.chinese;
 
   @override
   Widget build(BuildContext context) {
@@ -54,23 +56,53 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Text('Pick an image'),
               ),
               if (imagePath.isNotEmpty) ...[
+                SizedBox(height: 10),
                 Text('Filename: $fileName'),
                 Image.file(File(imagePath)),
-                ElevatedButton(
-                  onPressed: processImage,
-                  child: Text('Read Image Text'),
+                SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    ElevatedButton(
+                      onPressed: processImage,
+                      child: Text('Read Image Text'),
+                    ),
+                    _langSelectDropdown(),
+                  ],
                 ),
+                SizedBox(height: 10),
               ],
-
               if (ocrText.isNotEmpty)
-                Align(
-                  alignment: AlignmentGeometry.centerLeft,
-                  child: Text('OCR Text: \n$ocrText'),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Align(
+                    alignment: AlignmentGeometry.centerLeft,
+                    child: Text('OCR Text: \n$ocrText'),
+                  ),
                 ),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _langSelectDropdown() {
+    return DropdownMenu<TextRecognitionScript>(
+      initialSelection: detectionLang,
+      onSelected: (TextRecognitionScript? value) {
+        if (value != null) detectionLang = value;
+      },
+      dropdownMenuEntries: TextRecognitionScript.values
+          .map<DropdownMenuEntry<TextRecognitionScript>>((
+            TextRecognitionScript status,
+          ) {
+            return DropdownMenuEntry<TextRecognitionScript>(
+              value: status,
+              label: status.name, // Accesses the enum's name as a string
+            );
+          })
+          .toList(),
     );
   }
 
@@ -88,7 +120,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> processImage() async {
     if (imagePath.isEmpty) return;
     final file = File(imagePath);
-    ocrText = await readImageText(file);
+    ocrText = await readImageText(file, detectionLang);
     setState(() {});
   }
 }
