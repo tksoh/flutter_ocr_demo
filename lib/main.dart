@@ -18,11 +18,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter OCR',
+      title: 'Flutter OCR Demo',
       theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
       home: SafeArea(
         bottom: true,
-        child: const MyHomePage(title: 'Flutter OCR'),
+        child: const MyHomePage(title: 'Flutter OCR Demo'),
       ),
     );
   }
