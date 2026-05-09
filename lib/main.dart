@@ -100,7 +100,9 @@ class MyHomePageState extends State<MyHomePage> {
   }
 
   Widget imagePanel() {
-    return Container(
+    const maxZoom = 3.0;
+
+    final image = Container(
       decoration: BoxDecoration(
         border: Border.all(
           width: 1.0, // Border width
@@ -110,7 +112,7 @@ class MyHomePageState extends State<MyHomePage> {
         transformationController: zoomController,
         clipBehavior: Clip.hardEdge,
         minScale: 1.0,
-        maxScale: 4.0,
+        maxScale: maxZoom,
         child: Image.file(
           File(imagePath),
           frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
@@ -126,6 +128,18 @@ class MyHomePageState extends State<MyHomePage> {
           },
         ),
       ),
+    );
+
+    return GestureDetector(
+      onDoubleTap: () {
+        if (zoomController.value != Matrix4.identity()) {
+          resetImageZoom();
+        } else {
+          zoomController.value = Matrix4.identity()
+            ..scaleByDouble(maxZoom, maxZoom, maxZoom, 1.0);
+        }
+      },
+      child: image,
     );
   }
 
