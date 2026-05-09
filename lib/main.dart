@@ -42,6 +42,7 @@ class MyHomePageState extends State<MyHomePage> {
   String ocrText = '';
   TextRecognitionScript detectionLang = TextRecognitionScript.chinese;
   final scrollController = ScrollController();
+  final zoomController = TransformationController();
 
   @override
   Widget build(BuildContext context) {
@@ -106,6 +107,7 @@ class MyHomePageState extends State<MyHomePage> {
         ),
       ),
       child: InteractiveViewer(
+        transformationController: zoomController,
         clipBehavior: Clip.hardEdge,
         minScale: 1.0,
         maxScale: 4.0,
@@ -170,6 +172,10 @@ class MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  void resetImageZoom() {
+    zoomController.value = Matrix4.identity();
+  }
+
   Widget langSelectDropdown() {
     return DropdownMenu<TextRecognitionScript>(
       initialSelection: detectionLang,
@@ -198,6 +204,7 @@ class MyHomePageState extends State<MyHomePage> {
     if (image != null) {
       ocrText = '';
       imagePath = image.path;
+      resetImageZoom();
       setState(() {});
     }
   }
