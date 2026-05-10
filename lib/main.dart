@@ -172,7 +172,7 @@ class MyHomePageState extends State<MyHomePage> {
               width: 1.0, // Border width
             ),
           ),
-          child: Text(ocrText),
+          child: SelectableText(ocrText),
         ),
       ],
     );
